@@ -13,6 +13,12 @@
             android:name="com.hackathon.myntra_hackerramp.HomeActivity"
             android:exported="false" />
         <activity
+            android:name="com.hackathon.myntra_hackerramp.FileUploadActivity"
+            android:exported="false" />
+        <activity
+            android:name="com.hackathon.myntra_hackerramp.DrawingSheet"
+            android:exported="false" />
+        <activity
             android:name="com.hackathon.myntra_hackerramp.AuthActivity"
             android:exported="true"
             android:theme="@style/AppTheme.NoActionBar">
