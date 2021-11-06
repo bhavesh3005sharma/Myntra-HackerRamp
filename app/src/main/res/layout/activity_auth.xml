@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="isLoginScreen"
+            type="Boolean" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp">
+
+            <include
+                android:id="@+id/welcome_layout"
+                layout="@layout/auth_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewLogin" />
+
+            <TextView
+                android:id="@+id/textViewLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="72dp"
+                android:elevation="20dp"
+                android:onClick="setLoginScreen"
+                android:tag="signin"
+                android:text="Login"
+                android:textColor="@color/orange"
+                android:textSize="@{isLoginScreen?100:50}"
+                app:layout_constraintStart_toStartOf="@+id/welcome_layout"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewSignup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="20dp"
+                android:onClick="setLoginScreen"
+                android:tag="signup"
+                android:text="Create Account"
+                android:textColor="@color/orange"
+                android:textSize="@{isLoginScreen?50:100}"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewLogin"
+                app:layout_constraintEnd_toEndOf="@+id/welcome_layout"
+                app:layout_constraintTop_toTopOf="@+id/textViewLogin" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>
