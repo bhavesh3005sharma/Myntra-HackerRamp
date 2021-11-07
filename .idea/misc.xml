@@ -3,7 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-<<<<<<< HEAD
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/button_background.xml" value="0.2328125" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/circular_button_background.xml" value="0.23333333333333334" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/drawing.xml" value="0.2328125" />
@@ -13,14 +12,23 @@
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/new_drawing.xml" value="0.23333333333333334" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/paint.xml" value="0.2328125" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/paint_pressed.xml" value="0.2328125" />
-=======
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/drawable/ic_upvote_filled.xml" value="0.19114583333333332" />
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/drawable/ic_upvote_outlined.xml" value="0.19114583333333332" />
-        <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/activity_auth.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/activity_home.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/auth_layout.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/card_home.xml" value="0.14666666666666667" />
->>>>>>> 3d9fc65018763234f51054b4a4848f20538599de
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/drawable/button_background.xml" value="0.18" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/drawable/circular_button_background.xml" value="0.18" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/drawable/ic_save_black_24dp.xml" value="0.18" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/drawable/new_drawing.xml" value="0.18" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/drawable/paint.xml" value="0.18" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/drawable/paint_pressed.xml" value="0.18" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/layout/activity_auth.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/layout/activity_drawing_sheet.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/layout/activity_file_upload.xml" value="0.264" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/layout/activity_home.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/layout/activity_top10.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/layout/auth_layout.xml" value="0.17135416666666667" />
+        <entry key="..\:/Users/lenovo/StudioProjects/Myntra-HackerRamp-personal/app/src/main/res/layout/card_home.xml" value="0.152" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/account_auth_layout.xml" value="0.1" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/activity_drawing_sheet.xml" value="0.264" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/activity_file_upload.xml" value="0.2" />
@@ -32,7 +40,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
