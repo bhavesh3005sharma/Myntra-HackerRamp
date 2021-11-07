@@ -1,6 +1,7 @@
 package com.hackathon.myntra_hackerramp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.hackathon.myntra_hackerramp.FileUploadActivity;
 import com.hackathon.myntra_hackerramp.R;
 import com.hackathon.myntra_hackerramp.model.Model;
 
@@ -62,6 +64,14 @@ public class homeAdapter extends RecyclerView.Adapter<homeAdapter.holder> {
         if(model.getItemArrayList().get(1).getPicUrl()!=null) Glide.with(context).load(model.getDesignUrl()).into(holder.item2);
         if(model.getItemArrayList().get(2).getPicUrl()!=null) Glide.with(context).load(model.getDesignUrl()).into(holder.item3);
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FileUploadActivity.class);
+                intent.putExtra("from", "home");
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
