@@ -1,13 +1,9 @@
 package com.hackathon.myntra_hackerramp;
 
-import static java.security.AccessController.getContext;
 import static java.text.DateFormat.getDateTimeInstance;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -60,11 +54,11 @@ public class HomeActivity extends AppCompatActivity implements  homeAdapter.list
     }
 
     public void loadData(){
-        list.clear();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Sketches");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("sketches");
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                list.clear();
                 for(DataSnapshot ds:snapshot.getChildren()){
                     String name=String.valueOf(ds.child("username").getValue());
                     String uid=String.valueOf(ds.child("uid").getValue());
@@ -89,7 +83,7 @@ public class HomeActivity extends AppCompatActivity implements  homeAdapter.list
                     ArrayList<Vote> upvoters = new ArrayList<>();
                     if (ds.hasChild("listOfUpvoters"))
                         for (DataSnapshot s : ds.child("listOfUpvoters").getChildren())
-                            upvoters.add(new Vote(s.child("itemId").getValue().toString(), s.child("uid").getValue().toString()));
+                            upvoters.add(new Vote(s.child("key").getValue().toString(), s.child("uid").getValue().toString()));
 
                     int voteStatus = 0;
                     if (ds.child("listOfUpvoters").hasChild(mAuth.getUid()))
@@ -99,9 +93,7 @@ public class HomeActivity extends AppCompatActivity implements  homeAdapter.list
                     if(ds.hasChild("itemArrayList"))
                         for(DataSnapshot s:ds.child("itemArrayList").getChildren())
                             similarItems.add(new Item(s.child("itemId").getValue().toString(),s.child("picUrl").getValue().toString(),((long) s.child("price").getValue())));
-
-                    String key=ds.getKey().toString();
-
+                    String key = ds.getKey();
                     list.add(new Model(uid,name,sketchUrl,mlUrl,upVotesNo,upvoters,time,voteStatus,similarItems,key));
                 }
                 if(adapter!=null){
@@ -129,10 +121,6 @@ public class HomeActivity extends AppCompatActivity implements  homeAdapter.list
     }
 
     public void logout(View V) {
-        SharedPreferences sharedPreferences = getSharedPreferences("USER_DATA", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("email", null);
-        editor.apply();
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(this, AuthActivity.class));
         finish();
@@ -141,30 +129,25 @@ public class HomeActivity extends AppCompatActivity implements  homeAdapter.list
     @Override
     public void upVoteClicked(Model model) {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference upVotesRef = databaseReference.child("Sketches").child(model.getKey()).child("listOfUpvoters");
-        DatabaseReference complaintRef = databaseReference.child("Sketches").child(model.getKey());
+        DatabaseReference upVotesRef = databaseReference.child("sketches").child(model.getKey()).child("listOfUpvoters");
+        DatabaseReference sketchRef = databaseReference.child("sketches").child(model.getKey());
 
         Vote upvote = new Vote(model.getKey(), mAuth.getUid());
 
-        upVotesRef.child(mAuth.getUid()).setValue(upvote).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            complaintRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                    HashMap<String, Object> data = new HashMap<>();
-                                    if (task.getResult().hasChild("listOfUpvoters"))
-                                        data.put("upvotes", task.getResult().child("listOfUpvoters").getChildrenCount());
-                                    else data.put("upvotes", 0);
-                                    complaintRef.updateChildren(data);
-                                }
-                            });
-                        }
-                    });
-                }
+        upVotesRef.child(mAuth.getUid()).setValue(upvote).addOnCompleteListener(task -> sketchRef.get().addOnCompleteListener(task1 -> {
+            HashMap<String, Object> data = new HashMap<>();
+            if (task1.getResult().hasChild("listOfUpvoters"))
+                data.put("upvotes", task1.getResult().child("listOfUpvoters").getChildrenCount());
+            else data.put("upvotes", 0);
+            sketchRef.updateChildren(data);
+        }));
+    }
 
     @Override
     public void onDesignClicked(Model model) {
-
+        Intent intent = new Intent(this, FileUploadActivity.class);
+        intent.putExtra("data", model);
+        intent.putExtra("from", "home");
+        startActivity(intent);
     }
 }

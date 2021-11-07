@@ -1,9 +1,10 @@
 package com.hackathon.myntra_hackerramp.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Model {
+public class Model implements Serializable {
     String uid;
     String username;
     String designUrl;
@@ -16,6 +17,8 @@ public class Model {
     ArrayList<Item> itemArrayList;
     String key;
 
+    public Model() {
+    }
 
     public Model(String uid, String username, String designUrl, String mlUrl, long upvotes, ArrayList<Vote> listOfUpvoters, Map timeStampmap, String timeStampStr, int voteStatus, ArrayList<Item> itemArrayList) {
         this.uid = uid;

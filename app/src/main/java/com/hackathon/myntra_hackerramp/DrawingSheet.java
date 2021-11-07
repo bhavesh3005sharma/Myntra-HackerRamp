@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -22,9 +21,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.hackathon.myntra_hackerramp.databinding.ActivityDrawingSheetBinding;
+import com.hackathon.myntra_hackerramp.model.Model;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -164,9 +166,7 @@ public class DrawingSheet extends AppCompatActivity implements OnClickListener {
                 saveDialog.setMessage("Save drawing to device Gallery?");
                 saveDialog.setPositiveButton("Yes", (dialog, which) -> {
                     activityDrawingSheetBinding.drawing.setDrawingCacheEnabled(true);
-                    Log.d("DrawingCache ", "" + activityDrawingSheetBinding.drawing.getDrawingCache());
                     Uri uri = getImageUri(DrawingSheet.this, activityDrawingSheetBinding.drawing.getDrawingCache());
-                    Log.d("uri ", "" + uri);
                     if (uri != null) {
                         Toast savedToast = Toast.makeText(DrawingSheet.this,
                                 "Drawing saved to Gallery!", Toast.LENGTH_SHORT);
@@ -292,7 +292,14 @@ public class DrawingSheet extends AppCompatActivity implements OnClickListener {
 
     public void goToFileUploadPage(View view) {
         Intent intent = new Intent(this, FileUploadActivity.class);
-        intent.putExtra("uri", activityDrawingSheetBinding.drawing.getDrawingCache());
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        activityDrawingSheetBinding.drawing.setDrawingCacheEnabled(true);
+        String designUrl = getImageUri(DrawingSheet.this, activityDrawingSheetBinding.drawing.getDrawingCache()).toString();
+        activityDrawingSheetBinding.drawing.destroyDrawingCache();
+        Model data = new Model(user.getUid(), user.getDisplayName(), designUrl, null, 0,
+                new ArrayList<>(), null, null, 0, null);
+        intent.putExtra("data", data);
+        intent.putExtra("from", "drawing_sheet");
         startActivity(intent);
     }
 }

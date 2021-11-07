@@ -1,7 +1,6 @@
 package com.hackathon.myntra_hackerramp.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.hackathon.myntra_hackerramp.FileUploadActivity;
 import com.hackathon.myntra_hackerramp.R;
 import com.hackathon.myntra_hackerramp.model.Model;
 
@@ -46,32 +44,34 @@ public class homeAdapter extends RecyclerView.Adapter<homeAdapter.holder> {
 
     @Override
     public void onBindViewHolder(@NonNull holder holder, int position) {
-        Model model=list.get(position);
+        Model model = list.get(position);
         holder.username.setText(model.getUsername());
         holder.timeStamp.setText(model.getTimeStampStr());
         holder.upvotesNo.setText(String.valueOf(model.getUpvotes()));
-        holder.price1.setText(String.valueOf(model.getItemArrayList().get(0).getPrice()));
-        holder.price2.setText(String.valueOf(model.getItemArrayList().get(1).getPrice()));
-        holder.price3.setText(String.valueOf(model.getItemArrayList().get(2).getPrice()));
 
         if (model.getVoteStatus() == 1) {
             holder.upVote.setImageResource(R.drawable.ic_upvote_filled);
         }
 
-        if(model.getDesignUrl()!=null) Glide.with(context).load(model.getDesignUrl()).into(holder.design);
-        if(model.getMlUrl()!=null) Glide.with(context).load(model.getDesignUrl()).into(holder.ml);
-        if(model.getItemArrayList().get(0).getPicUrl()!=null) Glide.with(context).load(model.getDesignUrl()).into(holder.item1);
-        if(model.getItemArrayList().get(1).getPicUrl()!=null) Glide.with(context).load(model.getDesignUrl()).into(holder.item2);
-        if(model.getItemArrayList().get(2).getPicUrl()!=null) Glide.with(context).load(model.getDesignUrl()).into(holder.item3);
+        if (model.getDesignUrl() != null)
+            Glide.with(context).load(model.getDesignUrl()).into(holder.design);
+        if (model.getMlUrl() != null) Glide.with(context).load(model.getMlUrl()).into(holder.ml);
+        int sz = (model.getItemArrayList() != null) ? model.getItemArrayList().size() : 0;
+        if (sz > 0 && model.getItemArrayList().get(0).getPicUrl() != null) {
+            Glide.with(context).load(model.getItemArrayList().get(0).getPicUrl()).into(holder.item1);
+            holder.price1.setText("Rs. " + model.getItemArrayList().get(0).getPrice());
+        }
+        if (sz > 1 && model.getItemArrayList().get(1).getPicUrl() != null) {
+            Glide.with(context).load(model.getItemArrayList().get(1).getPicUrl()).into(holder.item2);
+            holder.price2.setText("Rs. " + model.getItemArrayList().get(1).getPrice());
+        }
+        if (sz > 2 && model.getItemArrayList().get(2).getPicUrl() != null) {
+            Glide.with(context).load(model.getItemArrayList().get(2).getPicUrl()).into(holder.item3);
+            holder.price3.setText("Rs. " + model.getItemArrayList().get(2).getPrice());
+        }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, FileUploadActivity.class);
-                intent.putExtra("from", "home");
-                context.startActivity(intent);
-            }
-        });
+        holder.itemView.setOnClickListener(v -> mListener.onDesignClicked(model));
+        holder.upVote.setOnClickListener(v -> mListener.upVoteClicked(model));
     }
 
     @Override

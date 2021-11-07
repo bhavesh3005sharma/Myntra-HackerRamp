@@ -1,6 +1,8 @@
 package com.hackathon.myntra_hackerramp.model;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item implements Serializable {
     String itemId;
     String picUrl;
     long price;

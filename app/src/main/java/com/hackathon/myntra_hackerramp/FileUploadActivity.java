@@ -1,132 +1,121 @@
 package com.hackathon.myntra_hackerramp;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import com.agrawalsuneet.dotsloader.loaders.TashieLoader;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.hackathon.myntra_hackerramp.databinding.ActivityFileUploadBinding;
 import com.hackathon.myntra_hackerramp.model.Item;
-import com.hackathon.myntra_hackerramp.model.Vote;
+import com.hackathon.myntra_hackerramp.model.Model;
+import com.squareup.picasso.Picasso;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.hackathon.myntra_hackerramp.databinding.ActivityFileUploadBinding;
-import com.hackathon.myntra_hackerramp.model.Model;
-import com.squareup.picasso.Picasso;
-
 public class FileUploadActivity extends AppCompatActivity {
     ActivityFileUploadBinding binding;
-    SharedPreferences sharedPreferences = getSharedPreferences("USER_DATA", MODE_PRIVATE);
-    String email = sharedPreferences.getString("email", null);
     Model data;
-
-    private String designUrl="", MLUrl="",prevActivity="";
-    private Button uploadButton;
-    private FirebaseAuth mAuth;
-    private ArrayList<Vote> listOfUpvoters;
-    int coins = 0;
-    private TashieLoader loader;
-    private TextView tv ;
+    DatabaseReference db = FirebaseDatabase.getInstance().getReference("sketches");
+    String imageId = db.push().getKey();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_file_upload);
-
-
-        uploadButton = findViewById(R.id.btnUpload);
-        loader = findViewById(R.id.tashieLoader2);
-        tv = findViewById(R.id.textView);
-
-        prevActivity = getIntent().getStringExtra("from");
-
-        if(prevActivity.equals("home")){
-            uploadButton.setVisibility(View.GONE);
-            tv.setVisibility(View.GONE);
+        binding = ActivityFileUploadBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        data = (Model) getIntent().getSerializableExtra("data");
+        if (data.getDesignUrl() != null)
+            Picasso.get().load(Uri.parse(data.getDesignUrl())).into(binding.design);
+        if (data.getMlUrl() != null)
+            Picasso.get().load(Uri.parse(data.getMlUrl())).into(binding.mlitem);
+        int sz = (data.getItemArrayList() != null) ? data.getItemArrayList().size() : 0;
+        if (sz > 0 && data.getItemArrayList().get(0).getPicUrl() != null) {
+            Glide.with(this).load(data.getItemArrayList().get(0).getPicUrl()).into(binding.item1);
+            binding.price1.setText("Rs. " + data.getItemArrayList().get(0).getPrice());
         }
-        else{
-            uploadButton.setVisibility(View.VISIBLE);
-            tv.setVisibility(View.VISIBLE);
+        if (sz > 1 && data.getItemArrayList().get(1).getPicUrl() != null) {
+            Glide.with(this).load(data.getItemArrayList().get(1).getPicUrl()).into(binding.item2);
+            binding.price2.setText("Rs. " + data.getItemArrayList().get(1).getPrice());
+        }
+        if (sz > 2 && data.getItemArrayList().get(2).getPicUrl() != null) {
+            Glide.with(this).load(data.getItemArrayList().get(2).getPicUrl()).into(binding.item3);
+            binding.price3.setText("Rs. " + data.getItemArrayList().get(2).getPrice());
         }
 
+        String prevActivity = getIntent().getStringExtra("from");
 
-        uploadButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveInDatabase();
-            }
-        });
+        if (prevActivity.equals("home")) {
+            binding.btnUpload.setVisibility(View.GONE);
+            binding.textView.setVisibility(View.GONE);
+        } else if (prevActivity.equals("drawing_sheet")) {
+            binding.btnUpload.setVisibility(View.VISIBLE);
+            binding.textView.setVisibility(View.VISIBLE);
+        }
+
+        binding.btnUpload.setOnClickListener(v -> upload_picture_in_cloud());
     }
 
     private void saveInDatabase() {
-
-        loader.setVisibility(View.VISIBLE);
-
-        String uid = mAuth.getCurrentUser().getUid();
-        String email = mAuth.getCurrentUser().getEmail();
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
-        String saveCurrentDate = currentDate.format(calendar.getTime());
-        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
-        String saveCurrentTime = currentTime.format(calendar.getTime());
-
-        String uniqueId = uid+saveCurrentDate+saveCurrentTime;
-
-        Map sketchData = new HashMap();
-        sketchData.put("image_url",designUrl);
-        sketchData.put("ml_image_url",MLUrl);
-        sketchData.put("likes",listOfUpvoters);
-        sketchData.put("coins",coins);
-
-        DatabaseReference db = FirebaseDatabase.getInstance().getReference("sketches").child(email);
-        db.child(uniqueId).setValue(sketchData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                            loader.setVisibility(View.GONE);
-                    }
+        binding.tashieLoader2.setVisibility(View.VISIBLE);
+        Map timeStampmap = new HashMap();
+        timeStampmap.put("timeStamp", ServerValue.TIMESTAMP);
+        data.setTimeStampmap(timeStampmap);
+        ArrayList<Item> arrayList = new ArrayList<>();
+        arrayList.add(new Item("" + Calendar.getInstance().getTimeInMillis(), "", 500));
+        arrayList.add(new Item("" + Calendar.getInstance().getTimeInMillis(), "", 500));
+        arrayList.add(new Item("" + Calendar.getInstance().getTimeInMillis(), "", 500));
+        data.setItemArrayList(arrayList);
+        db.child(imageId).setValue(data)
+                .addOnSuccessListener(unused -> {
+                    binding.tashieLoader2.setVisibility(View.GONE);
+                    Toast.makeText(this, "Post Uploaded", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this, HomeActivity.class));
+                    finish();
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_SHORT);
-                        snackbar.setBackgroundTint(ContextCompat.getColor(FileUploadActivity.this, R.color.red));
-                        snackbar.setTextColor(ContextCompat.getColor(FileUploadActivity.this,R.color.white));
-                        snackbar.show();
-                    }
+                .addOnFailureListener(e -> {
+                    binding.tashieLoader2.setVisibility(View.GONE);
+                    Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_SHORT);
+                    snackbar.setBackgroundTint(ContextCompat.getColor(FileUploadActivity.this, R.color.red));
+                    snackbar.setTextColor(ContextCompat.getColor(FileUploadActivity.this, R.color.white));
+                    snackbar.show();
                 });
-
-        binding = ActivityFileUploadBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        Uri uri = Uri.parse(getIntent().getStringExtra("uri"));
-        Picasso.get().load(uri).into(binding.imageView);
     }
 
-    public void postTheImage(View view) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("sketches");
-//        myRef.child(email).child("")
+    public void upload_picture_in_cloud() {
+        binding.tashieLoader2.setVisibility(View.VISIBLE);
+        StorageReference srefer = FirebaseStorage.getInstance().getReference().child("images")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(imageId);
+        srefer.putFile(Uri.parse(data.getDesignUrl())).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                srefer.getDownloadUrl().addOnSuccessListener(uri -> {
+                    data.setDesignUrl(uri.toString());
+                    data.setMlUrl(uri.toString());
+                    saveInDatabase();
+                }).addOnFailureListener(e -> {
+                    binding.tashieLoader2.setVisibility(View.GONE);
+                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            } else {
+                binding.tashieLoader2.setVisibility(View.GONE);
+                Toast.makeText(this, "Picture failed to be Uploaded", Toast.LENGTH_SHORT).show();
+            }
+
+        });
     }
+
 }

@@ -71,23 +71,24 @@
             <LinearLayout
                 android:layout_gravity="center"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_weight="1">
 
-            <ImageButton
-                android:layout_width="match_parent"
-                android:id="@+id/upVote"
-                android:layout_height="wrap_content"
-                android:background="#FDFBFB"
-                android:src="@drawable/ic_upvote_outlined" />
+                <ImageButton
+                    android:id="@+id/upVote"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="#FDFBFB"
+                    android:src="@drawable/ic_upvote_outlined"
+                    app:tint="@color/purple_700" />
 
-            <TextView
-                android:id="@+id/upVoteNumber"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="#FDFBFB"
-                android:gravity="center" />
+                <TextView
+                    android:id="@+id/upVoteNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:background="#FDFBFB"
+                    android:gravity="center" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,27 +104,30 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <ImageButton
+                    <ImageView
                         android:id="@+id/item1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="#FDFBFB"/>
-
-                    <ImageButton
-                        android:id="@+id/item2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="#FDFBFB"/>
-
-                    <ImageButton
-                        android:id="@+id/item3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:background="#FDFBFB"
-                        android:padding="5dp"/>
+                        android:scaleType="centerInside" />
+
+                    <ImageView
+                        android:id="@+id/item2"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:background="#FDFBFB"
+                        android:scaleType="centerInside" />
+
+                    <ImageView
+                        android:id="@+id/item3"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:padding="5dp"
+                        android:background="#FDFBFB"
+                        android:scaleType="centerInside" />
                 </LinearLayout>
 
                 <LinearLayout

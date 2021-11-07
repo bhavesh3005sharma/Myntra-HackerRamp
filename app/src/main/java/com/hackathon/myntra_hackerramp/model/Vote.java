@@ -1,6 +1,8 @@
 package com.hackathon.myntra_hackerramp.model;
 
-public class Vote {
+import java.io.Serializable;
+
+public class Vote implements Serializable {
     String key;
     String uid;
 

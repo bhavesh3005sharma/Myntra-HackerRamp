@@ -1,7 +1,6 @@
 package com.hackathon.myntra_hackerramp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -16,6 +15,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.hackathon.myntra_hackerramp.databinding.ActivityAuthBinding;
@@ -24,6 +24,7 @@ import com.hackathon.myntra_hackerramp.model.User;
 import java.util.Objects;
 
 public class AuthActivity extends AppCompatActivity {
+    private static final String TAG = "AuthActivity";
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     ActivityAuthBinding activityAuthBinding;
     MutableLiveData<Boolean> isLoginScreen = new MutableLiveData<>(true);
@@ -47,12 +48,11 @@ public class AuthActivity extends AppCompatActivity {
         String name = Objects.requireNonNull(activityAuthBinding.welcomeLayout.textInputName.getEditText()).getText().toString();
         String email = Objects.requireNonNull(activityAuthBinding.welcomeLayout.textInputEmail.getEditText()).getText().toString();
         String password = Objects.requireNonNull(activityAuthBinding.welcomeLayout.textInputPassword.getEditText()).getText().toString();
-        if (name.isEmpty()) {
+        if (!isLoginScreen.getValue() && name.isEmpty()) {
             activityAuthBinding.welcomeLayout.textInputName.setError("Name is Required");
             activityAuthBinding.welcomeLayout.textInputName.requestFocus();
             return;
-        }
-        else if (email.isEmpty()) {
+        } else if (email.isEmpty()) {
             activityAuthBinding.welcomeLayout.textInputEmail.setError("Email is Required");
             activityAuthBinding.welcomeLayout.textInputEmail.requestFocus();
             return;
@@ -77,8 +77,10 @@ public class AuthActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             activityAuthBinding.welcomeLayout.setIsProcessing(false);
             if (task.isSuccessful()) {
-                saveInDB(name,email,mAuth.getCurrentUser().getUid());
-                saveLoginUserData(email);
+                saveInDB(name, email, mAuth.getCurrentUser().getUid());
+                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        .setDisplayName(name).build();
+                mAuth.getCurrentUser().updateProfile(profileUpdates);
                 goToHome();
             } else
                 Toast.makeText(this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -105,7 +107,6 @@ public class AuthActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             activityAuthBinding.welcomeLayout.setIsProcessing(false);
             if (task.isSuccessful()) {
-                saveLoginUserData(email);
                 goToHome();
             } else {
                 Toast.makeText(this, "Invalid Credentials", Toast.LENGTH_SHORT).show();
@@ -118,17 +119,9 @@ public class AuthActivity extends AppCompatActivity {
         finish();
     }
 
-    public void saveLoginUserData(String email) {
-        SharedPreferences sharedPreferences = getSharedPreferences("USER_DATA", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("email", email);
-        editor.apply();
-    }
-
     @Override
     protected void onStart() {
-        SharedPreferences sharedPreferences = getSharedPreferences("USER_DATA", MODE_PRIVATE);
-        if (sharedPreferences.getString("email", null) != null && mAuth.getCurrentUser() != null)
+        if (mAuth != null && mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getEmail() != null)
             goToHome();
         super.onStart();
     }
