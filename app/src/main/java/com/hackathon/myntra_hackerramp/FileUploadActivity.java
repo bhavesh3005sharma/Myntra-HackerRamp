@@ -28,13 +28,13 @@ import java.util.Map;
 
 public class FileUploadActivity extends AppCompatActivity {
 
-    String designUrl="", MLUrl="",prevActivity="";
-    Button uploadButton;
+    private String designUrl="", MLUrl="",prevActivity="";
+    private Button uploadButton;
     private FirebaseAuth mAuth;
-    ArrayList<Vote> listOfUpvoters;
+    private ArrayList<Vote> listOfUpvoters;
     int coins = 0;
-    TashieLoader loader;
-    TextView tv ;
+    private TashieLoader loader;
+    private TextView tv ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
