@@ -38,7 +38,18 @@ public class FileUploadActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityFileUploadBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        String prevActivity = getIntent().getStringExtra("from");
         data = (Model) getIntent().getSerializableExtra("data");
+
+        if (prevActivity.equals("home")) {
+            binding.btnUpload.setVisibility(View.GONE);
+            binding.textView.setVisibility(View.GONE);
+        } else if (prevActivity.equals("drawing_sheet")) {
+            binding.btnUpload.setVisibility(View.VISIBLE);
+            binding.textView.setVisibility(View.VISIBLE);
+        }
+
+
         if (data.getDesignUrl() != null)
             Picasso.get().load(Uri.parse(data.getDesignUrl())).into(binding.design);
         if (data.getMlUrl() != null)
@@ -57,16 +68,6 @@ public class FileUploadActivity extends AppCompatActivity {
             binding.price3.setText("Rs. " + data.getItemArrayList().get(2).getPrice());
         }
 
-        String prevActivity = getIntent().getStringExtra("from");
-
-        if (prevActivity.equals("home")) {
-            binding.btnUpload.setVisibility(View.GONE);
-            binding.textView.setVisibility(View.GONE);
-        } else if (prevActivity.equals("drawing_sheet")) {
-            binding.btnUpload.setVisibility(View.VISIBLE);
-            binding.textView.setVisibility(View.VISIBLE);
-        }
-
         binding.btnUpload.setOnClickListener(v -> upload_picture_in_cloud());
     }
 
@@ -75,11 +76,6 @@ public class FileUploadActivity extends AppCompatActivity {
         Map timeStampmap = new HashMap();
         timeStampmap.put("timeStamp", ServerValue.TIMESTAMP);
         data.setTimeStampmap(timeStampmap);
-        ArrayList<Item> arrayList = new ArrayList<>();
-        arrayList.add(new Item("" + Calendar.getInstance().getTimeInMillis(), "", 500));
-        arrayList.add(new Item("" + Calendar.getInstance().getTimeInMillis(), "", 500));
-        arrayList.add(new Item("" + Calendar.getInstance().getTimeInMillis(), "", 500));
-        data.setItemArrayList(arrayList);
         db.child(imageId).setValue(data)
                 .addOnSuccessListener(unused -> {
                     binding.tashieLoader2.setVisibility(View.GONE);
