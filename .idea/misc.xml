@@ -3,31 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-<<<<<<< HEAD
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/button_background.xml" value="0.2328125" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/circular_button_background.xml" value="0.23333333333333334" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/drawing.xml" value="0.2328125" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/erase.xml" value="0.23333333333333334" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/ic_save_black_24dp.xml" value="0.23333333333333334" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/inset_background.xml" value="0.2328125" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/new_drawing.xml" value="0.23333333333333334" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/paint.xml" value="0.2328125" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/drawable/paint_pressed.xml" value="0.2328125" />
-=======
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/drawable/ic_upvote_filled.xml" value="0.19114583333333332" />
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/drawable/ic_upvote_outlined.xml" value="0.19114583333333332" />
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/activity_auth.xml" value="0.14719202898550723" />
-        <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/activity_home.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/activity_home.xml" value="0.2916666666666667" />
+        <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/activity_top10.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/auth_layout.xml" value="0.14719202898550723" />
         <entry key="..\:/Users/Pranitha/Myntra-HackerRamp/app/src/main/res/layout/card_home.xml" value="0.14666666666666667" />
->>>>>>> 3d9fc65018763234f51054b4a4848f20538599de
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/account_auth_layout.xml" value="0.1" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/activity_drawing_sheet.xml" value="0.264" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/activity_file_upload.xml" value="0.2" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/activity_home.xml" value="0.2" />
+        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/activity_home.xml" value="0.21302083333333333" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/activity_main.xml" value="0.18896833503575078" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/auth_layout.xml" value="0.264" />
-        <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/card_home.xml" value="0.4" />
         <entry key="..\:/android studio pfojects/MyntraHackerRamp/app/src/main/res/layout/login_welcome_layout.xml" value="0.264" />
       </map>
     </option>
