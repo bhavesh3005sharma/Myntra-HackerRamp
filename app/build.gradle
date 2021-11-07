@@ -53,10 +53,10 @@ dependencies {
 
     implementation 'gun0912.ted:tedpermission:2.1.0'
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-<<<<<<< HEAD
+
 
     implementation 'com.squareup.picasso:picasso:2.71828'
-=======
+
     implementation 'com.google.firebase:firebase-database:20.0.2'
->>>>>>> 3d9fc65018763234f51054b4a4848f20538599de
+
 }

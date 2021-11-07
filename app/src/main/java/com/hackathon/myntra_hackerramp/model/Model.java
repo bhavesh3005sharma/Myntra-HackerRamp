@@ -14,6 +14,8 @@ public class Model {
     String timeStampStr;
     int voteStatus;
     ArrayList<Item> itemArrayList;
+    String key;
+
 
     public Model(String uid, String username, String designUrl, String mlUrl, long upvotes, ArrayList<Vote> listOfUpvoters, Map timeStampmap, String timeStampStr, int voteStatus, ArrayList<Item> itemArrayList) {
         this.uid = uid;
@@ -26,6 +28,39 @@ public class Model {
         this.timeStampStr = timeStampStr;
         this.voteStatus = voteStatus;
         this.itemArrayList = itemArrayList;
+    }
+
+    public Model(String uid, String username, String designUrl, String mlUrl, long upvotes, ArrayList<Vote> listOfUpvoters, String timeStampStr, int voteStatus, ArrayList<Item> itemArrayList) {
+        this.uid = uid;
+        this.username = username;
+        this.designUrl = designUrl;
+        this.mlUrl = mlUrl;
+        this.upvotes = upvotes;
+        this.listOfUpvoters = listOfUpvoters;
+        this.timeStampStr = timeStampStr;
+        this.voteStatus = voteStatus;
+        this.itemArrayList = itemArrayList;
+    }
+
+    public Model(String uid, String username, String designUrl, String mlUrl, long upvotes, ArrayList<Vote> listOfUpvoters, String timeStampStr, int voteStatus, ArrayList<Item> itemArrayList,String key) {
+        this.uid = uid;
+        this.username = username;
+        this.designUrl = designUrl;
+        this.mlUrl = mlUrl;
+        this.upvotes = upvotes;
+        this.listOfUpvoters = listOfUpvoters;
+        this.timeStampStr = timeStampStr;
+        this.voteStatus = voteStatus;
+        this.itemArrayList = itemArrayList;
+        this.key=key;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 
     public String getUid() {
