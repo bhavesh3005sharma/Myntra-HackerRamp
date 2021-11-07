@@ -11,6 +11,7 @@ import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import androidx.annotation.Nullable;
@@ -28,15 +29,17 @@ public class PaintViewClass extends View {
     //canvas bitmap
     private Bitmap canvasBitmap;
     private float brushSize, lastBrushSize;
+    ScaleGestureDetector scaleGestureDetector;
 
     public PaintViewClass(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
+        scaleGestureDetector = new ScaleGestureDetector(getContext(), new PinchZoomListener());
         setupDrawing();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        scaleGestureDetector.onTouchEvent(event);
         float touchX = event.getX();
         float touchY = event.getY();
         switch (event.getAction()) {
@@ -116,5 +119,25 @@ public class PaintViewClass extends View {
 
     public void setLastBrushSize(float lastSize) {
         lastBrushSize = lastSize;
+    }
+
+    public class PinchZoomListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            float gestureFactor = detector.getScaleFactor();
+//            if(gestureFactor>1) Toast.makeText(getContext(), "Zoom Out", Toast.LENGTH_SHORT).show();
+//            else Toast.makeText(getContext(), "Zoom In", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        @Override
+        public boolean onScaleBegin(ScaleGestureDetector detector) {
+            return true;
+        }
+
+        @Override
+        public void onScaleEnd(ScaleGestureDetector detector) {
+            super.onScaleEnd(detector);
+        }
     }
 }

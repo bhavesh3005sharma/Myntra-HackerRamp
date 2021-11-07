@@ -3,6 +3,7 @@ package com.hackathon.myntra_hackerramp;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -53,6 +55,22 @@ public class DrawingSheet extends AppCompatActivity implements OnClickListener {
         setChoiceSelected(lastSelectedChoice, lastSelectedChoice, 2);
 
         activityDrawingSheetBinding.drawing.setColor("#6200EE");
+        activityDrawingSheetBinding.brushSizeChanger.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                activityDrawingSheetBinding.drawing.setBrushSize(i);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         super.onCreate(savedInstanceState);
     }
@@ -88,16 +106,16 @@ public class DrawingSheet extends AppCompatActivity implements OnClickListener {
     private void setChoiceSelected(int lastSelectedChoice_1, int lastSelectedChoice_2, int a) {
         ImageButton btn1 = findViewById(lastSelectedChoice_1);
         ImageButton btn2 = findViewById(lastSelectedChoice_2);
-        int clr = Color.parseColor("#D9D3D3");
+        int clr = Color.parseColor("#5E65CE");
         btn2.setBackgroundColor(clr);
         btn1.setElevation(10);
-        btn1.setBackgroundResource(R.drawable.button_background);
+        btn1.setBackgroundColor(Color.CYAN);
         if (a == 1)
             btn1.setImageResource(R.drawable.new_drawing);
         else if (a == 2)
             btn1.setImageResource(R.drawable.drawing);
         else if (a == 3)
-            btn1.setImageResource(R.drawable.erase);
+            btn1.setImageResource(R.drawable.eraser);
         else if (a == 4)
             btn1.setImageResource(R.drawable.ic_save_black_24dp);
     }
@@ -133,7 +151,6 @@ public class DrawingSheet extends AppCompatActivity implements OnClickListener {
                 setChoiceSelected(R.id.erase_btn, lastSelectedChoice, 3);
                 lastSelectedChoice = R.id.erase_btn;
                 activityDrawingSheetBinding.drawing.setErase(true);
-                activityDrawingSheetBinding.drawing.setBrushSize(activityDrawingSheetBinding.drawing.getLastBrushSize());
                 break;
             case R.id.save_btn:
                 setChoiceSelected(R.id.save_btn, lastSelectedChoice, 4);
@@ -145,30 +162,24 @@ public class DrawingSheet extends AppCompatActivity implements OnClickListener {
                 AlertDialog.Builder saveDialog = new AlertDialog.Builder(DrawingSheet.this);
                 saveDialog.setTitle("Save drawing");
                 saveDialog.setMessage("Save drawing to device Gallery?");
-                saveDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        activityDrawingSheetBinding.drawing.setDrawingCacheEnabled(true);
-                        Log.d("DrawingCache ", "" + activityDrawingSheetBinding.drawing.getDrawingCache());
-                        Uri uri = getImageUri(DrawingSheet.this, activityDrawingSheetBinding.drawing.getDrawingCache());
-                        Log.d("uri ", "" + uri);
-                        if (uri != null) {
-                            Toast savedToast = Toast.makeText(DrawingSheet.this,
-                                    "Drawing saved to Gallery!", Toast.LENGTH_SHORT);
-                            savedToast.show();
-                        } else {
-                            Toast unsavedToast = Toast.makeText(DrawingSheet.this,
-                                    "Oops! Image could not be saved.", Toast.LENGTH_SHORT);
-                            unsavedToast.show();
-                        }
-                        activityDrawingSheetBinding.drawing.destroyDrawingCache();
+                saveDialog.setPositiveButton("Yes", (dialog, which) -> {
+                    activityDrawingSheetBinding.drawing.setDrawingCacheEnabled(true);
+                    Log.d("DrawingCache ", "" + activityDrawingSheetBinding.drawing.getDrawingCache());
+                    Uri uri = getImageUri(DrawingSheet.this, activityDrawingSheetBinding.drawing.getDrawingCache());
+                    Log.d("uri ", "" + uri);
+                    if (uri != null) {
+                        Toast savedToast = Toast.makeText(DrawingSheet.this,
+                                "Drawing saved to Gallery!", Toast.LENGTH_SHORT);
+                        savedToast.show();
+                    } else {
+                        Toast unsavedToast = Toast.makeText(DrawingSheet.this,
+                                "Oops! Image could not be saved.", Toast.LENGTH_SHORT);
+                        unsavedToast.show();
+                    }
+                    activityDrawingSheetBinding.drawing.destroyDrawingCache();
 
-                    }
                 });
-                saveDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                saveDialog.setNegativeButton("No", (dialog, which) -> dialog.cancel());
                 saveDialog.show();
                 break;
             case R.id.color1:
@@ -277,5 +288,11 @@ public class DrawingSheet extends AppCompatActivity implements OnClickListener {
                 .setDeniedMessage("Give Storage Permission\nPlease turn on permissions at\n [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.READ_CONTACTS, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .check();
+    }
+
+    public void goToFileUploadPage(View view) {
+        Intent intent = new Intent(this, FileUploadActivity.class);
+        intent.putExtra("uri", activityDrawingSheetBinding.drawing.getDrawingCache());
+        startActivity(intent);
     }
 }

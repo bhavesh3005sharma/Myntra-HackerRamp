@@ -11,19 +11,19 @@
         android:background="#FBFAFA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.321" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:background="@color/purple_700"
+        android:layout_margin="10dp"
         android:gravity="center_horizontal"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,36 +32,38 @@
         <ImageButton
             android:id="@+id/new_btn"
             android:layout_width="50dp"
-            android:layout_height="fill_parent"
-            android:layout_marginStart="20dp"
-            android:background="#D9D3D3"
+            android:layout_height="50dp"
+            android:background="#5E65CE"
+            android:scaleType="centerCrop"
             android:contentDescription="New Drawing"
             android:src="@drawable/new_drawing" />
 
         <ImageButton
             android:id="@+id/draw_btn"
             android:layout_width="50dp"
-            android:layout_height="fill_parent"
-            android:layout_marginStart="20dp"
-            android:background="#D9D3D3"
+            android:layout_height="50dp"
+            android:background="#5E65CE"
+            android:scaleType="centerCrop"
+            app:tint="@color/white"
             android:contentDescription="Brush"
             android:src="@drawable/drawing" />
 
         <ImageButton
             android:id="@+id/erase_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginStart="20dp"
-            android:background="#D9D3D3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#5E65CE"
+            android:padding="4dp"
+            android:scaleType="centerCrop"
             android:contentDescription="Eraser"
-            android:src="@drawable/erase" />
+            android:src="@drawable/eraser" />
 
         <ImageButton
             android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
-            android:layout_marginStart="20dp"
-            android:background="#D9D3D3"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="#5E65CE"
+            android:scaleType="centerCrop"
             android:contentDescription="Save"
             android:src="@drawable/ic_save_black_24dp" />
 
@@ -209,5 +211,27 @@
             android:outlineProvider="bounds"
             android:src="@drawable/paint" />
     </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/brushSizeChanger"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:progress="20"
+        android:progressTint="#5E65CE"
+        android:thumbTint="#5E65CE"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:onClick="goToFileUploadPage"
+        android:src="@drawable/ic_baseline_arrow_forward_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
